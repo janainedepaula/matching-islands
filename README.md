@@ -1,4 +1,4 @@
-# Virulence-Islands-analysis
+# Virulence-Islands-analysis for Gipsy2
 python scripts for similarities analysis in virulence islands between a specific dataset of strains. These python scripts can be used with cytoscape analysis. 
 
 ### COMPARAÇÃO DE ILHAS DE VIRULÊNCIA (OU A QUE VC QUISER) ENTRE 2 ou + LINHAGENS ###
