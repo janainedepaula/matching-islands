@@ -26,7 +26,7 @@ This prevents relying solely on FASTA headers (which may contain annotation disc
 
 2. Identifying Matches:
 
-For each gene the script finds the best match in the target island and applay identity thresholds (default): ≥ 90% → high-identity match; < 90% → low-identity match. 
+For each gene the script finds the best match in the target island and applay identity thresholds (default): ≥ 90% → high-identity match; < 90% → low-identity match. For each unique pair of .faa files, read sequences from File A and File B. For each gene in File A, identify its most similar homolog in File B. 
 
 Thresholds can be edited inside the script and its also detects differences in the number of genes between islands, identifies islands with no significant matches and produces detailed percentage-based summaries.
 
@@ -35,41 +35,30 @@ Thresholds can be edited inside the script and its also detects differences in t
 virulence_island_comparison_results.txt: Contains an overall summary, high-identity matches (≥ 90%) between proteins and percentage similarity between islands.
 low_identity_matches.txt: Contains all matches with < 90% identity. 
 
------------------------------ parei aqui 
+The script automatically detects islands that do not share any match ≥ 90%, are therefore considered exclusive islands. These are reported in the global summary
 
-###COMPARAÇÃO PAR A PAR DE ARQUIVOS ###
-Para cada par único de arquivos .faa, o script lê as sequências (genes) dos dois arquivos e para cada gene do arquivo A, encontra o gene mais similar no arquivo B.
-Calcula a identidade relativa da melhor correspondência. Se a identidade for: 
-- ≥ 0.9 (90%), a correspondência é armazenada como alta identidade no 'virulence_island_comparison_results'.
-- < 0.9, ela entra como baixa identidade e é armazenada em 'low_identity_matches'.
+Python libraries:
 
-### E ILHAS SEM CORRESPONDÊNCIA (ILHAS EXCLUSIVAS)? ###
-O script identifica quais arquivos .faa não tiveram nenhuma correspondência com identidade ≥ 90% com qualquer outro. 
-Isso é relatado no resumo como ilhas sem correspondência.
+-> Bio.SeqIO: Reading FASTA and .faa files. 
 
-#### biblios em python usadas ###
-- Bio.SeqIO: para ler os arquivos .faa e FASTA.
-- Bio.Align.PairwiseAligner: para realizar o alinhamento par a par (global) entre proteínas.
-	- A pontuação é definida como: match_score = 1; mismatch_score = 0, logo a "identidade" será uma fração simples: nº de matches / comprimento da maior sequência.
-- os, pathlib, collections: para manipular diretórios, caminhos e estruturas auxiliares.
+-> Bio.Align.PairwiseAligner: Pairwise global alignment.
 
-** O script precisa estar em uma pasta que possui ele + as duas (ou mais) pastas de output do gipsy2 tipo 'xxxx_Islands_fisher'. 
-** Demora um pouco por conta do alinhamento, recomendo usar screen.
+-> os, pathlib: Directory and file handling.
 
-## COMO RODAR
-'python3 match_islands.py' dentro do diretório que tem as pastas de interesse.
+-> collections: Auxiliary data structures.
 
-#### parte 02
-script: network_similarity.py
+# match_islands.py RUNNING
 
-Ele vai procurar dentro do arquivo virulence_island_comparison_results.txt gerado pelo match islands os valores de similaridades apresentados na comparação par a par. 
-Depois, ele vai classificar esses valores da seguinte forma:
-ilhas que possuem > 90% de similaridade;
-ilhas que possuem similaridade > 50% x <90%
-ilhas que possuem similaridade < 50%. 
+The script must be placed inside a folder containing at least two folders of interest, because it searches both within and between these directories.
 
-Vai gerar um arquivo chamado: cytoscape_virulence_network_filtered.csv. 
-Dentro de cytoscape_virulence_network_filtered.csv terá 4 colunas, sendo a última mostrando à qual classe aquela comparação pertence. 
-Só abrir no cytoscape depois. 
-  - aqui, talvez, seja bom filtrar o arquivo para mostrar somente as de interesse, pois o cytoscape_virulence_network_filtered.csv pode ser grande e atrapalhar a visualização. 
+Alignment is computationally expensive so I recommend run using screen or tmux on Linux.
 
+# 2. network_similarity.py PURPOSE
+
+This script processes the output of match_islands.py "virulence_island_comparison_results.txt". 
+
+network_similarity extracts similarity values computed in the pairwise comparison and classifies island similarity into three categories based on similarity range: >90% (Highly similar islands), 50–90%
+(Moderately similar islands) and <50% (Low similarity/divergent). Generates an archieve called "cytoscape_virulence_network_filtered.csv". 
+
+These classifications can be exported to build network graphs in Cytoscape (Recommended). 
+ 
