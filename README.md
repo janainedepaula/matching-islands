@@ -6,7 +6,7 @@ The main goal of match-islands is to:
 - Generate interpretable summaries and similarity networks for exploratory and comparative genomics analyses.
 
 # RUNNING - Important!!
-You neet to download "scripts" folder and the match_islands.py of interest to run. You can choose from: 
+You need to download "scripts" folder and the match_islands.py of interest to run. You can choose from: 
 - If you want to compare pathogenicity islands, please choose "pathogenicity_match_islands.py" to run. 
 - If you want to compare resistance islands, please choose "resistance_match_islands.py" to run. 
 - If you want to compare symbiotic islands, please choose "symbiotic_match_islands.py" to run. 
