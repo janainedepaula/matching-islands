@@ -84,7 +84,10 @@ This script requires the following Python packages:
 
 Install dependencies with:
 - pip install pandas networkx python-louvain
-  
+
+## License
+This repository is licensed under the MIT License.
+
 # Status
 🚧 Active development. The pipeline is stable but may evolve as new analyses are incorporated.
 
