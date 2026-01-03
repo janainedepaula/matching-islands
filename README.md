@@ -53,20 +53,31 @@ Python ≥ 3 and libraries:
 - collections: Auxiliary data structures.
 
 # ---------
-# Optional analysis: Louvain clustering
-- For large datasets (high number of strains and islands), network visualization and interpretation can become challenging. To address this, match-islands can be complemented with an optional, independent script that applies Louvain community detection to the similarity network. The Louvain algorithm detects communities based on global connectivity patterns, making it particularly suitable for genomic island similarity networks where similarity relationships are not necessarily transitive.
-- Note: This step is not required for running match_islands.py, but is recommended when working with dense or highly connected networks.
+# Optional analysis: Louvain's algorithm for clustering
+For large datasets (high number of strains and islands), network visualization and interpretation can become challenging. To address this, match-islands can be complemented with an optional, independent script that applies Louvain community detection to the similarity network. The Louvain algorithm detects communities based on global connectivity patterns, making it particularly suitable for genomic island similarity networks where similarity relationships are not necessarily transitive.
+
+Note: This step is not required for running match_islands.py, but is recommended when working with dense or highly connected networks.
 
 # Louvain clustering - Purpose
 - Identify clusters (communities) of highly related islands. 
 - Reduce visual complexity in Cytoscape (colored by cluster).
 - Facilitate interpretation of large similarity networks.
 
-# Louvain clustering - Input and Outputs
+# Louvain clustering - Running, input and outputs
+
 - Input:"renamed_cytoscape_network_classified.csv"
 - Output files:
    - "nodes_with_clusters.csv": list of nodes with assigned Louvain clusters. 
    - "edges_for_cytoscape.csv": edge table ready for Cytoscape import.
+
+# Louvain clustering - dependencies
+This script requires the following Python packages:
+- pandas
+- networkx
+- python-louvain
+
+Install dependencies with:
+- pip install pandas networkx python-louvain
   
 # Status
 🚧 Active development. The pipeline is stable but may evolve as new analyses are incorporated.
