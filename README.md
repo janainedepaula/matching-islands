@@ -1,4 +1,4 @@
-match_islands.py is an in-house Python pipeline for comparative analysis and network construction of genomic islands (e.g. virulence, resistance, symbiotic or metabolic islands) predicted by GIPSy2. The pipeline performs protein-level, sequence-based comparisons between islands across multiple bacterial strains and generates outputs ready for downstream interpretation and visualization in Cytoscape.
+match_islands.py is an in-house Python pipeline for comparative analysis and network construction of genomic islands (e.g. virulence/pathogenicicty, resistance, symbiotic or metabolic islands) predicted by GIPSy2. The pipeline performs protein-level, sequence-based comparisons between islands across multiple bacterial strains and generates outputs ready for downstream interpretation and visualization in Cytoscape.
 
 The main goal of match-islands is to:
 - Compare genomic islands across two or more strains using protein sequence similarity;
