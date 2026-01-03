@@ -11,7 +11,7 @@ You need to download "scripts" folder and the match_islands.py of interest to ru
 - If you want to compare resistance islands, please choose "resistance_match_islands.py" to run. 
 
 # How the pipeline works?
-1. Input detection: The script must be placed inside a directory containing the folders of interest (in the same directory of LineageName_Islands_fisher/ folders). The script automatically searches for GIPSy2 amino acid outputs following the structure:
+1. Input detection: The script must be placed inside a directory containing the folders of interest (in the same directory of LineageName_Islands_fisher/ folders). The script automatically searches for GIPSy2 amino acid outputs following the structure (e.g. for Pathogenicity Islands):
 LineageName_Islands_fisher/
    └── Amino_acids/
        └── Virulence_Island_*.faa
