@@ -24,15 +24,18 @@ All .faa files found are stored internally and compared in a pairwise manner.
 
 # Output files
 After execution, the following files are produced:
-- "SUMMARY_virulence_island_comparison_results.txt": Pairwise summaries including average similarity and unmatched genes;
-- "cytoscape_virulence_network_filtered.csv": Similarity network file for Cytoscape;
-- "cytoscape_virulence_network_filtered_renamed.csv": Network file with simplified node names.
-- "SUMMARY_virulence_islands_global_analysis.txt": Global overview of the analysis.
+- "summary_comparison_results.txt": Pairwise summaries including average similarity and unmatched genes;
+- "cytoscape_network_filtered.csv": Similarity network file for Cytoscape;
+- "cytoscape_network_filtered_renamed.csv": Network file with simplified node names.
+- "sumarry_global_analysis.txt": Global overview of the analysis.
 
-# Dependences 
-Python libraries:
+# Dependencies 
+Python ≥ 3 and libraries:
 - Bio.SeqIO: Reading FASTA and .faa files. 
 - Bio.Align.PairwiseAligner: Pairwise global alignment.
 - os, pathlib: Directory and file handling.
 - collections: Auxiliary data structures.
 
+# Status
+🚧 Active development. The pipeline is stable but may evolve as new analyses are incorporated.
+If came up any questions, please contact me through janainedpaula@gmail.com. 
