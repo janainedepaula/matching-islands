@@ -4,6 +4,8 @@ from pathlib import Path
 from multiprocessing import Pool, cpu_count
 import re
 import csv
+import argparse
+import subprocess
 
 def read_fasta_sequences(faa_path):
     return list(SeqIO.parse(faa_path, "fasta"))
@@ -58,13 +60,31 @@ def process_pair(args):
     all_identities = [m[2] for m in high + low]
     avg_identity = (sum(all_identities) / len(all_identities) * 100) if all_identities else 0.0
 
+    total1 = len(seqs1)
+    total2 = len(seqs2)
+
+    matched1 = total1 - len(unmatched1)
+    matched2 = total2 - len(unmatched2)
+
+    coverage_1_to_2 = matched1 / total1 if total1 > 0 else 0
+    coverage_2_to_1 = matched2 / total2 if total2 > 0 else 0
+
     summary = (
         f"{key1} vs {key2}: average similarity of {avg_identity:.2f}%.\n"
-        f"- {len(unmatched1)} gene(s) from {key1} without ≥90% match in {key2}\n"
-        f"- {len(unmatched2)} gene(s) from {key2} without ≥90% match in {key1}"
+        f"- {len(unmatched1)} protein(s) from {key1} without ≥90% match in {key2}\n"
+        f"- {len(unmatched2)} protein(s) from {key2} without ≥90% match in {key1}"
     )
 
-    return (key1, key2, summary, high, low)
+    return ( 
+    key1, 
+    key2, 
+    summary, 
+    avg_identity,
+    coverage_1_to_2, 
+    coverage_2_to_1, 
+    total1, 
+    total2 
+)
 
 
 def extract_similarity_network(summary_file, output_csv):
@@ -101,7 +121,7 @@ def extract_similarity_network(summary_file, output_csv):
 
 def simplify_island_name(full_name):
     strain_match = re.search(r"(.+?)_Islands_fisher", full_name)
-    island_match = re.search(r"(Virulence|Resistance)_Island_(\d+)", full_name)
+    island_match = re.search(r"(Virulence|Resistance)_Island_(\d+)", full_name) 
 
     if strain_match and island_match:
         return f"{strain_match.group(1)} ({island_match.group(2)})"
@@ -158,7 +178,7 @@ def generate_global_summary(base_dir, network_csv, output_txt):
 
     with open(output_txt, "w", encoding="utf-8") as out:
         out.write("GLOBAL SUMMARY OF PATHOGENICITY ISLANDS ANALYSIS\n")
-        out.write("=" * 55 + "\n\n")
+        out.write("=" * 55 + "\n\n") #dar uma olhada nessa linha depois 
 
         out.write(f"Total number of strains analyzed: {len(islands_per_strain)}\n")
         out.write(f"Total number of pathogenicity islands: {total_islands}\n\n")
@@ -175,6 +195,16 @@ def generate_global_summary(base_dir, network_csv, output_txt):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Pairwise comparison of pathogenicity islands"
+    )
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+        help="Generate supplementary coverage figure"
+    )
+    args = parser.parse_args()
+
     base_dir = Path.cwd()
     faa_files = {}
 
@@ -198,10 +228,32 @@ def main():
     summary_file = "comparison_results_summary.txt"
     network_file = "cytoscape_network_classified.csv"
     global_summary = "global_analysis_summary.txt"
+    coverage_file = "island_pairwise_coverage.csv"
 
     with open(summary_file, "w", encoding="utf-8") as f:
-        for _, _, summary, _, _ in results:
+        for key1, key2, summary, avg_id, cov_ab, cov_ba, n1, n2 in results:
             f.write(summary + "\n\n")
+
+    with open(coverage_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "Island_A",
+            "Island_B",
+            "Total_Genes_A",
+            "Total_Genes_B",
+            "Coverage_A_to_B",
+            "Coverage_B_to_A"
+        ])
+
+        for key1, key2, _, _, cov_ab, cov_ba, n1, n2 in results:
+            writer.writerow([
+                key1,
+                key2,
+                n1,
+                n2,
+                f"{cov_ab:.3f}",
+                f"{cov_ba:.3f}"
+            ])
 
     extract_similarity_network(summary_file, network_file)
     renamed_network = rename_network_nodes(network_file)
@@ -212,14 +264,24 @@ def main():
         output_txt=global_summary
     )
 
+    if args.plot:
+        print("\nGenerating supplementary coverage figure...")
+        subprocess.run([
+            "python",
+            "scripts/plot_directional_coverage.py",
+            coverage_file
+        ])
+
     print("\nPipeline completed successfully.\nThanks for using it! \nIf you have any questions, please contact me by email at janainedpaula@gmail.com.")
     print("\nGenerated files:")
     print(f"- {summary_file}")
     print(f"- {network_file}")
     print(f"- {renamed_network}")
     print(f"- {global_summary}")
+    print(f"- {coverage_file}")
 
 
 if __name__ == "__main__":
     main()
+
 
