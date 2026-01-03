@@ -1,4 +1,4 @@
-match_islands.py is an in-house Python pipeline for comparative analysis and network construction of genomic islands (e.g. virulence/pathogenicicty, resistance, symbiotic or metabolic islands) predicted by GIPSy2. The pipeline performs protein-level, sequence-based comparisons between islands across multiple bacterial strains and generates outputs ready for downstream interpretation and visualization in Cytoscape.
+match_islands.py is an in-house Python pipeline for comparative analysis and network construction of genomic islands (e.g. virulence/pathogenicicty, resistance, symbiotic or metabolic islands) predicted by GIPSy2. The pipeline performs protein-level, sequence-based comparisons between islands across multiple bacterial strains and generates outputs ready for downstream interpretation and visualization in Cytoscape. Plus, the pipeline supports scalable analysis of pathogenicity island similarity, clustering, and directional gene coverage across large genomic datasets.
 
 The main goal of match-islands is to:
 - Compare genomic islands across two or more strains using protein sequence similarity;
@@ -6,9 +6,9 @@ The main goal of match-islands is to:
 - Generate interpretable summaries and similarity networks for exploratory and comparative genomics analyses.
 
 # RUNNING - Important!!
-- If you want to compare pathogenicity islands, please choose "pathogenicity_match_islands.py" to run.
-- If you want to compare resistance islands, please choose "resistance_match_islands.py" to run.
-- If you want to compare symbiotic islands, please choose "symbiotic_match_islands.py" to run.
+- If you want to compare pathogenicity islands, please choose "pathogenicity_match_islands.py" to run. 
+- If you want to compare resistance islands, please choose "resistance_match_islands.py" to run. 
+- If you want to compare symbiotic islands, please choose "symbiotic_match_islands.py" to run. 
 - If you want to compare metabolic islands, please choose "metabolic_match_islands.py" to run.
 
 # How the pipeline works?
@@ -26,14 +26,23 @@ All .faa files found are stored internally and compared in a pairwise manner.
    
 5. Similarity network construction: From the pairwise comparison summaries, the pipeline will extract average similarity values and classify island relationships into three categories: High (≥ 90%) or Medium (50–89%) or Low (< 50%). This analyse will be export to a CSV file compatible with Cytoscape with node names are automatically simplified to improve network readability.
 
-6. Global summary: A final report is generated containing number of strains analyzed, total number of islands, number of islands per strain and distribution of similarity levels in the network.
+6. Global summary: A final report is generated containing number of strains analyzed, total number of islands, number of islands per strain and distribution of similarity levels in the network. 
 
 # Output files
 After execution, the following files are produced:
 - "comparison_results_summary.txt": Pairwise summaries including average similarity and unmatched genes;
 - "cytoscape_network_classified.csv": Similarity network file for Cytoscape with original names of islands and lineages;
-- "renamed_cytoscape_network_classified.csv": Network file with simplified names (best for cytoscape analysis).
-- "global_analysis_summary.txt": Global overview of the analysis.
+- "renamed_cytoscape_network_classified.csv": Network file with simplified names (best for cytoscape analysis);
+- "global_analysis_summary.txt": Global overview of the analysis;
+- "island_pairwise_coverage.csv": Includes the information of fraction of genes from island A covered by island B and vice-versa.
+
+# Optional analysis: --plot flag for coverage
+- The scripts/plot_directional_coverage.py takes "island_pairwise_coverage.csv" as input and generates a hexbin density plot showing the relationship between directional coverage values:
+   - X-axis: Fraction of genes from island A covered by island B  
+   - Y-axis: Fraction of genes from island B covered by island A
+- The resulting figure highlights the highly symmetric island pairs (values close to the diagonal), asymmetric coverage patterns and dense regions corresponding to frequently observed coverage combinations across the dataset.
+
+The generation of the directional coverage figure is optional and can be enabled using the "--plot" flag when running the main pipeline (e.g. python3 pathogenicity_match_islands.py --plot).
 
 # Dependencies 
 Python ≥ 3 and libraries:
@@ -42,6 +51,22 @@ Python ≥ 3 and libraries:
 - os, pathlib: Directory and file handling.
 - collections: Auxiliary data structures.
 
+# ---------
+# Optional analysis: Louvain clustering
+- For large datasets (high number of strains and islands), network visualization and interpretation can become challenging. To address this, match-islands can be complemented with an optional, independent script that applies Louvain community detection to the similarity network. The Louvain algorithm detects communities based on global connectivity patterns, making it particularly suitable for genomic island similarity networks where similarity relationships are not necessarily transitive.
+- Note: This step is not required for running match_islands.py, but is recommended when working with dense or highly connected networks.
+
+# Louvain clustering - Purpose
+- Identify clusters (communities) of highly related islands. 
+- Reduce visual complexity in Cytoscape (colored by cluster).
+- Facilitate interpretation of large similarity networks.
+
+# Louvain clustering - Input and Outputs
+- Input:"renamed_cytoscape_network_classified.csv"
+- Output files:
+   - "nodes_with_clusters.csv": list of nodes with assigned Louvain clusters. 
+   - "edges_for_cytoscape.csv": edge table ready for Cytoscape import.
+  
 # Status
 🚧 Active development. The pipeline is stable but may evolve as new analyses are incorporated.
 
