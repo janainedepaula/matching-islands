@@ -24,10 +24,10 @@ All .faa files found are stored internally and compared in a pairwise manner.
 
 # Output files
 After execution, the following files are produced:
-- "summary_comparison_results.txt": Pairwise summaries including average similarity and unmatched genes;
-- "cytoscape_network_filtered.csv": Similarity network file for Cytoscape;
-- "cytoscape_network_filtered_renamed.csv": Network file with simplified node names.
-- "sumarry_global_analysis.txt": Global overview of the analysis.
+- "comparison_results_summary.txt": Pairwise summaries including average similarity and unmatched genes;
+- "cytoscape_network_classified.csv": Similarity network file for Cytoscape with original names of islands and lineages;
+- "renamed_cytoscape_network_classified.csv": Network file with simplified names (best for cytoscape analysis).
+- "global_analysis_summary.txt": Global overview of the analysis.
 
 # Dependencies 
 Python ≥ 3 and libraries:
@@ -38,4 +38,5 @@ Python ≥ 3 and libraries:
 
 # Status
 🚧 Active development. The pipeline is stable but may evolve as new analyses are incorporated.
+
 If came up any questions, please contact me through janainedpaula@gmail.com. 
