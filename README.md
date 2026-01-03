@@ -5,6 +5,12 @@ The main goal of match-islands is to:
 - Identify shared, partially related, and exclusive islands;
 - Generate interpretable summaries and similarity networks for exploratory and comparative genomics analyses.
 
+# RUNNING
+If you want to compare pathogenicity islands, please choose "pathogenicity_match_islands.py" to run.
+If you want to compare resistance islands, please choose "resistance_match_islands.py" to run.
+If you want to compare symbiotic islands, please choose "symbiotic_match_islands.py" to run.
+If you want to compare metabolic islands, please choose "metabolic_match_islands.py" to run.
+
 # How the pipeline works?
 1. Input detection: The script must be placed inside a directory containing the folders of interest (in the same directory of LineageName_Islands_fisher/ folders). The script automatically searches for GIPSy2 amino acid outputs following the structure:
 LineageName_Islands_fisher/
