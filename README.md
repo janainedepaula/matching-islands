@@ -31,8 +31,8 @@ After execution, the following files are produced:
 
 # Dependences 
 Python libraries:
--> Bio.SeqIO: Reading FASTA and .faa files. 
--> Bio.Align.PairwiseAligner: Pairwise global alignment.
--> os, pathlib: Directory and file handling.
--> collections: Auxiliary data structures.
+- Bio.SeqIO: Reading FASTA and .faa files. 
+- Bio.Align.PairwiseAligner: Pairwise global alignment.
+- os, pathlib: Directory and file handling.
+- collections: Auxiliary data structures.
 
