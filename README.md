@@ -14,9 +14,11 @@ Original software:
 Rodrigues, D. L. N., Azevedo, V. A. de C., Soares, S. de C., & Aburjaile, F. F. (2024–2025). GIPSy2 - Genomic Island Prediction Software 2 (2.0.7). Zenodo. https://doi.org/10.5281/zenodo.14969252
 
 # RUNNING - Important!!
-You need to download "scripts" folder and the match_islands.py of interest to run. You can choose from: 
+You need to download the match_islands.py of interest to run. You can choose from: 
 - If you want to compare pathogenicity islands, please choose "pathogenicity_match_islands.py" to run. 
-- If you want to compare resistance islands, please choose "resistance_match_islands.py" to run. 
+- If you want to compare resistance islands, please choose "resistance_match_islands.py" to run.
+
+Below you'll find the optional coverage analysis. If you like to run it too, you must download "scripts" folder and run with "--plot" flag.
 
 # How the pipeline works?
 1. Input detection: The script must be placed inside a directory containing the folders of interest (in the same directory of LineageName_Islands_fisher/ folders). The script automatically searches for GIPSy2 amino acid outputs following the structure (e.g. for Pathogenicity Islands):
